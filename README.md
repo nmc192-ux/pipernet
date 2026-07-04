@@ -18,8 +18,8 @@ This repository is built by a first-time coder, one working milestone at a time.
 |-------|------|--------|
 | 0 | Foundations: environment, git, first script | ✅ done |
 | 1 | One file, two devices — content-addressed storage and retrieval | ✅ done |
-| 2 | Encrypted sharding | ⬜ next |
-| 3 | Redundancy & self-healing | ⬜ |
+| 2 | Encrypted sharding | ✅ done |
+| 3 | Redundancy & self-healing | ⬜ next |
 | 4 | A living multi-device network | ⬜ |
 | 5 | Bounded self-improvement | ⬜ |
 | 6 | Contribution economy (optional) | ⬜ |
@@ -40,6 +40,11 @@ npm run content
 
 # 4. Phase 1b — two nodes, one file: a file crosses between two peers with no server
 npm run twonodes
+
+# 5. Phase 2 — encrypted sharding: compress, encrypt, split into shards, reassemble
+npm run shard
+#    ...or shard a real file of your own:
+#    node src/03-encrypted-sharding.js /path/to/your/file
 ```
 
 Each script prints what it's doing as it goes, so you can watch the idea become real.

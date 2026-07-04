@@ -7,7 +7,8 @@
   "scripts": {
     "hello": "node src/00-hello.js",
     "content": "node src/01-content-addressing.js",
-    "twonodes": "node src/02-two-nodes.js"
+    "twonodes": "node src/02-two-nodes.js",
+    "shard": "node src/03-encrypted-sharding.js"
   },
   "engines": {
     "node": ">=20"
