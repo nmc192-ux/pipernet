@@ -1,0 +1,15 @@
+{
+  "name": "pipernet",
+  "version": "0.1.0",
+  "description": "A decentralized network for the public good — the new internet, built one working milestone at a time.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "hello": "node src/00-hello.js",
+    "content": "node src/01-content-addressing.js",
+    "twonodes": "node src/02-two-nodes.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

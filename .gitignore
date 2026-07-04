@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Runtime data
+*.log
+.DS_Store
+
+# Local node storage / scratch
+.pipernet-data/
+tmp/
