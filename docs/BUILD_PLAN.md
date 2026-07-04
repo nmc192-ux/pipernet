@@ -40,7 +40,7 @@ The show ended in 2019. Since then, nearly every hard problem PiperNet faced has
 
 ---
 
-## Phase 0 — Foundations
+## Phase 0 — Foundations ✅
 *You can run code, and nothing you build can ever be lost.*
 
 | | |
@@ -52,7 +52,7 @@ The show ended in 2019. Since then, nearly every hard problem PiperNet faced has
 
 ---
 
-## Phase 1 — One file, two devices
+## Phase 1 — One file, two devices ✅
 *The PiperNet embryo: a file crosses between two machines with no server in the middle.*
 
 | | |
@@ -64,7 +64,7 @@ The show ended in 2019. Since then, nearly every hard problem PiperNet faced has
 
 ---
 
-## Phase 2 — Encrypted sharding
+## Phase 2 — Encrypted sharding ✅
 *The single most important mechanism in the entire system.*
 
 | | |
@@ -76,8 +76,9 @@ The show ended in 2019. Since then, nearly every hard problem PiperNet faced has
 
 ---
 
-## Phase 3 — Redundancy and self-healing
+## Phase 3 — Redundancy and self-healing ✅
 *Turn devices off, and the data survives anyway.*
+*Built: `npm run redundancy` — erasure-codes into 5 shards, any 3 rebuild the file; proven by deleting 2 shards and recovering byte-for-byte, and by confirming 2 shards cannot.*
 
 | | |
 |---|---|

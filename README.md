@@ -19,8 +19,8 @@ This repository is built by a first-time coder, one working milestone at a time.
 | 0 | Foundations: environment, git, first script | ✅ done |
 | 1 | One file, two devices — content-addressed storage and retrieval | ✅ done |
 | 2 | Encrypted sharding | ✅ done |
-| 3 | Redundancy & self-healing | ⬜ next |
-| 4 | A living multi-device network | ⬜ |
+| 3 | Redundancy & self-healing | ✅ done |
+| 4 | A living multi-device network | ⬜ next |
 | 5 | Bounded self-improvement | ⬜ |
 | 6 | Contribution economy (optional) | ⬜ |
 
@@ -44,12 +44,23 @@ npm run content
 npm run twonodes
 
 # 5. Phase 2 — encrypted sharding: compress, encrypt, split into shards, reassemble
-npm run shard
+#    You provide the passphrase via an environment variable (never hard-coded):
+PIPERNET_PASSPHRASE='my secret words' npm run shard
 #    ...or shard a real file of your own:
-#    node src/03-encrypted-sharding.js /path/to/your/file
+#    PIPERNET_PASSPHRASE='my secret words' node src/03-encrypted-sharding.js /path/to/your/file
+
+# 6. Phase 3 — redundancy & self-healing: erasure-code into 5 shards, any 3 rebuild;
+#    lose any 2 shards and the file still recovers byte-for-byte
+PIPERNET_PASSPHRASE='my secret words' npm run redundancy
+#    ...or on a real file of your own:
+#    PIPERNET_PASSPHRASE='my secret words' node src/04-redundancy.js /path/to/your/file
 ```
 
 Each script prints what it's doing as it goes, so you can watch the idea become real.
+
+The passphrase is the one secret that unlocks your data — so PiperNet reads it
+from your environment and refuses to run without it, rather than baking a secret
+into the code.
 
 ## The stack
 

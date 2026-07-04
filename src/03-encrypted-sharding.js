@@ -44,9 +44,27 @@ const SHARD_DIR = path.join(PROJECT_ROOT, "tmp", "shards");
 
 const SHARD_COUNT = 5; // how many fragments to split into
 
-// A fixed passphrase for the demo. In real life this would be YOURS, and never
-// written down in code. Everything encrypted with it can only be opened with it.
-const PASSPHRASE = "correct-horse-battery-staple";
+// Your passphrase is the ONE secret that unlocks your data. It must never be
+// written down in the code (anyone who reads the repo would then hold your key).
+// So we take it from the environment instead, and refuse to run without it.
+// Set it like this:   PIPERNET_PASSPHRASE='my secret words' npm run shard
+function getPassphrase() {
+  const p = process.env.PIPERNET_PASSPHRASE;
+  if (!p) {
+    console.error(
+      "\n  ✗ No passphrase provided." +
+        "\n    PiperNet needs a passphrase to derive your encryption key." +
+        "\n    Set it in your environment and re-run, for example:" +
+        "\n" +
+        "\n      PIPERNET_PASSPHRASE='my secret words' npm run shard" +
+        "\n" +
+        "\n    (Passing it as an environment variable keeps your passphrase out" +
+        "\n     of the command itself and out of your shell history.)\n"
+    );
+    process.exit(1);
+  }
+  return p;
+}
 
 // ----------------------------------------------------------------------------
 // Small helpers
@@ -151,6 +169,10 @@ async function main() {
   console.log("  PiperNet — Phase 2: Encrypted Sharding");
   console.log("  --------------------------------------");
 
+  // Read your passphrase from the environment (never hard-coded). Exits with a
+  // clear message if it's missing.
+  const passphrase = getPassphrase();
+
   // --- Get the data to protect: either the user's file, or a built-in sample.
   const userFile = process.argv[2];
   let original;
@@ -179,7 +201,7 @@ async function main() {
   console.log(`     ${original.length} bytes  ->  ${compressed.length} bytes compressed`);
 
   // --- STEP 2: ENCRYPT -------------------------------------------------------
-  const encrypted = encrypt(compressed, PASSPHRASE);
+  const encrypted = encrypt(compressed, passphrase);
   console.log(`\n  2. ENCRYPT (AES-256-GCM, key from your passphrase via scrypt)`);
   console.log(`     ${compressed.length} bytes  ->  ${encrypted.length} bytes sealed`);
   console.log(`     (packed as: salt + iv + auth-tag + ciphertext)`);
@@ -194,7 +216,7 @@ async function main() {
 
   // --- STEP 4: REASSEMBLE ----------------------------------------------------
   const gluedBack = reassembleFromShards(SHARD_DIR);
-  const decrypted = decrypt(gluedBack, PASSPHRASE);
+  const decrypted = decrypt(gluedBack, passphrase);
   const decompressed = zlib.zstdDecompressSync(decrypted);
   console.log(`\n  4. REASSEMBLE  (glue shards -> decrypt -> decompress)`);
   console.log(`     ${gluedBack.length} bytes glued  ->  ${decompressed.length} bytes recovered`);
@@ -213,7 +235,7 @@ async function main() {
   let shardAloneFailed = false;
   try {
     // Try to decrypt just one shard, as an attacker who stole it might.
-    decrypt(oneShard, PASSPHRASE);
+    decrypt(oneShard, passphrase);
   } catch {
     shardAloneFailed = true; // expected: it has no valid tag / is incomplete
   }
