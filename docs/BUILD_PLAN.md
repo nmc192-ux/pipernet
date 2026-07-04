@@ -113,7 +113,7 @@ The show ended in 2019. Since then, nearly every hard problem PiperNet faced has
 
 ---
 
-## Phase 6 — The contribution economy *(optional, later)*
+## Phase 8 — The contribution economy *(optional, later)*
 *The honest incentive layer, without the speculative coin.*
 
 | | |
@@ -133,7 +133,7 @@ Per Articles 16 and 18, the founding network stops at bounded self-improvement. 
 
 ## The shape of the journey
 
-Phases 0–1 get you from *nothing* to *a file crossing between two machines with no server* — the idea made real, fast. Phases 2–3 build the irreducible core: encrypted sharding and survivable redundancy. Phase 4 turns that core into a living, watchable network. Phase 5 makes it improve itself, safely. Phase 6, if you want it, adds the fair economy.
+Phases 0–1 get you from *nothing* to *a file crossing between two machines with no server* — the idea made real, fast. Phases 2–3 build the irreducible core: encrypted sharding and survivable redundancy. Phase 4 turns that core into a living, watchable network. Phase 5 makes it improve itself, safely. Beyond it, the Envisioning Document extends the plan with Phase 6 (mutable state & identity) and Phase 7 (post-quantum & privacy hardening); Phase 8, if you want it, adds the fair economy.
 
 At every checkpoint you have a working thing, understood by its builder, faithful to the charter. That is how an entire network gets built by someone new to code: not in one heroic leap, but as a sequence of real, finished, visible steps — each one an idea turned into reality.
 

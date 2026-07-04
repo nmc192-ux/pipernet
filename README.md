@@ -22,7 +22,9 @@ This repository is built by a first-time coder, one working milestone at a time.
 | 3 | Redundancy & self-healing | ✅ done |
 | 4 | A living multi-device network | ⬜ next |
 | 5 | Bounded self-improvement | ⬜ |
-| 6 | Contribution economy (optional) | ⬜ |
+| 6 | Mutable state & identity | ⬜ |
+| 7 | Post-quantum & privacy hardening | ⬜ |
+| 8 | Contribution economy (optional) | ⬜ |
 
 ## Running the code on your machine
 

@@ -200,7 +200,7 @@ Opinionated choices, with the honest alternative and the tradeoff. **Bold = star
 
 ## E. Updated implementation & build plan
 
-This table follows the charter's build order (Magna Carta Article 23) and the companion Build Plan's phase numbering — bounded self-improvement stays **Phase 5**, the contribution economy stays **Phase 6** — and extends that plan with two later phases the Build Plan doesn't yet enumerate: **7 · mutable state & identity** and **8 · post-quantum & privacy hardening**. (Per Article 24 the charter governs; where this doc once renumbered self-improvement to 6, it has been reconciled back to the charter.) Every phase ships something runnable, has explicit acceptance criteria, maps to the charter, and bakes in the **iterate loop: build → run → measure → learn → adjust → commit → push.** Interruption-proof: each phase is a finished checkpoint.
+This table follows the charter's build order (Magna Carta Article 23): bounded self-improvement stays **Phase 5** (locked by Article 23; it never moves). It then extends the plan with three phases the Build Plan doesn't detail, ordered so the *essential* work lands before the *optional* economy: **6 · mutable state & identity**, **7 · post-quantum & privacy hardening**, and **8 · contribution economy (optional)**, kept last. (Per Article 24 the charter governs.) Every phase ships something runnable, has explicit acceptance criteria, maps to the charter, and bakes in the **iterate loop: build → run → measure → learn → adjust → commit → push.** Interruption-proof: each phase is a finished checkpoint.
 
 | Phase | You build | Acceptance test (done = ) | Charter |
 |---|---|---|---|
@@ -210,9 +210,9 @@ This table follows the charter's build order (Magna Carta Article 23) and the co
 | **3 · Redundancy & self-healing** | Distribute shards with erasure coding; retrieve with some nodes offline | Kill a chunk of nodes; file still rebuilds; redundancy auto-restores | Art. 4, 13 |
 | **4 · A living network** | Multi-node discovery; health dashboard (reachable nodes) | 3+ heterogeneous devices self-organize; you watch nodes join/leave/heal on screen | Art. 11, 14 |
 | **5 · Bounded self-improvement** | Telemetry + rules that rebalance/reroute/repair, all logged & reversible, with a stop switch | Knock the network off-balance; it restores toward target *without you*; every action is logged and undoable | Art. 17, 18 |
-| **6 · Contribution economy** (optional) | Proven contribution ledger | A node earns credit for storage served and spends it to store its own data | Art. 12 |
-| **7 · Mutable state & identity** | Keypair identity; a CRDT-backed profile/file-index; naming | Edit your index on two devices offline; they merge with no conflict; name resolves to latest | Art. 2, 7, 9 |
-| **8 · Post-quantum & privacy hardening** | Hybrid PQ encryption; metadata minimization; credible-exit export | Data encrypts under hybrid classical+ML-KEM; user can export everything and leave | Art. 8, 9, 18 |
+| **6 · Mutable state & identity** | Keypair identity; a CRDT-backed profile/file-index; naming | Edit your index on two devices offline; they merge with no conflict; name resolves to latest | Art. 2, 7, 9 |
+| **7 · Post-quantum & privacy hardening** | Hybrid PQ encryption; metadata minimization; credible-exit export | Data encrypts under hybrid classical+ML-KEM; user can export everything and leave | Art. 8, 9, 18 |
+| **8 · Contribution economy** (optional) | Proven contribution ledger | A node earns credit for storage served and spends it to store its own data | Art. 12 |
 
 **The iterate loop, concretely, every phase:** write the smallest version that could work → run it and watch → measure against the acceptance test → note what surprised you → adjust → `git add -A && git commit -m "…" && git push`. Ship rough, learn from reality (the "if you're not embarrassed by v1, you shipped too late" principle the show quotes), refine.
 
@@ -249,7 +249,7 @@ This table follows the charter's build order (Magna Carta Article 23) and the co
 - *Abuse / illegal content on a censorship-resistant network* → design for encrypted-by-default (operators can't see content), clear norms, and node-operator controls, and think through this honestly before scale, not after.
 - *Complexity outruns a solo newcomer* → the phased plan; stand on libraries; each phase shippable alone.
 
-**Minimal path to one real user deriving real value.** The whole point of the phased build: by Phase 7 you have identity + mutable state + redundant encrypted storage across a few devices. The first real use case is small and honest — *"back up and sync my own files across my own devices, encrypted, with no cloud account."* One person, real value, no server. That's the seed from which a network grows; everything after is more nodes and more uses.
+**Minimal path to one real user deriving real value.** The whole point of the phased build: by Phase 6 you have identity + mutable state + redundant encrypted storage across a few devices. The first real use case is small and honest — *"back up and sync my own files across my own devices, encrypted, with no cloud account."* One person, real value, no server. That's the seed from which a network grows; everything after is more nodes and more uses.
 
 ---
 
@@ -257,11 +257,11 @@ This table follows the charter's build order (Magna Carta Article 23) and the co
 
 1. **Transport choice for the real network:** stay on Helia (all-JS, simplest) or adopt iroh (most robust, adds a Rust dependency) at Phase 4? *Leaning: prototype on Helia, evaluate iroh at Phase 4.*
 2. **Erasure-coding parameters:** what N and k (redundancy vs. overhead)? *Start Storj-like; tune with Phase 3 measurements.*
-3. **CRDT choice:** Automerge (clean JSON) vs. Yjs (text-heavy) for Phase 7. *Leaning Automerge.*
+3. **CRDT choice:** Automerge (clean JSON) vs. Yjs (text-heavy) for Phase 6. *Leaning Automerge.*
 4. **When (if ever) to add a token** — deliberately deferred; revisit only with real network traction.
 5. **The abuse/content-moderation stance** on an encrypted, censorship-resistant network — needs a thought-through position before Phase 4 scale.
-6. **Post-quantum timing:** how soon to move at-rest encryption to hybrid PQ, given "harvest now, decrypt later." *Leaning: design keys PQ-ready now, switch on by Phase 8.*
+6. **Post-quantum timing:** how soon to move at-rest encryption to hybrid PQ, given "harvest now, decrypt later." *Leaning: design keys PQ-ready now, switch on by Phase 7.*
 
-**Essential vs. aspirational:** Phases 2–4 (encrypted sharding, redundancy, a living network) together with Phase 7 (mutable state & identity) are *essential* — they are PiperNet. Phase 5 (bounded self-improvement) is the charter's signature capability and high-value. Phases 6 and 8 (economy, PQ hardening) are important but can follow real usage. The agentic and token layers are where ambition must stay disciplined by the charter. *(Note: mutable state & identity is numbered 7 to keep the charter's Article 23 ordering — self-improvement as Phase 5 — intact; its being numbered later than 5 does not lower its priority, only its charter-fixed position.)*
+**Essential vs. aspirational:** Phases 2–4 (encrypted sharding, redundancy, a living network) together with Phase 6 (mutable state & identity) are *essential* — they are PiperNet. Phase 5 (bounded self-improvement) is the charter's signature capability and high-value. Phases 7 and 8 (post-quantum hardening, then the optional economy) are important but can follow real usage. The agentic and token layers are where ambition must stay disciplined by the charter. *(Ordering note: the essential identity & mutable-state work is Phase 6, deliberately placed before the optional economy at Phase 8; self-improvement stays Phase 5, locked by Magna Carta Article 23.)*
 
 *Next action: build Phase 2 — encrypted sharding — and commit it. The design above is the map; the repo is the territory.*
