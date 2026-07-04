@@ -66,19 +66,27 @@ For each capability: the fictional version, the best real 2026 technology, what 
 
 ### C.1 The layer stack
 
+Layer numbers below follow the **Magna Carta, Article 15** (canonical: 1 = compression … 5 = bounded self-improvement). Concerns the charter's five-layer covenant doesn't enumerate — applications, mutable state, and the incentive ledger — are shown as strata *outside* the numbered covenant so they never collide with the charter's numbering.
+
 ```mermaid
 graph TD
-    U[Person / App] --> L7[Layer 7 · Applications: your files, messages, profile]
-    L7 --> L6[Layer 6 · Mutable state: CRDTs for accounts, edits, shared docs]
-    L6 --> L5[Layer 5 · Bounded self-improvement: agents place, route, repair — within limits]
-    L5 --> L4[Layer 4 · Incentives: contribution ledger, fair accounting]
-    L4 --> L3[Layer 3 · Redundant distribution + integrity: erasure coding, BLAKE3 verification]
-    L3 --> L2[Layer 2 · Encrypted sharding: compress → encrypt → split]
-    L2 --> L1[Layer 1 · P2P transport + identity: dial by key, hole-punch, relays]
-    L1 --> D[(Idle capacity on real devices: phones, laptops, Pis, even fridges)]
+    U[Person / App] --> APP[Applications · your files, messages, profile]
+    APP --> MUT[Mutable state · CRDTs for accounts, edits, shared docs]
+    MUT --> COV
+    subgraph COV[The Architecture Covenant · five layers, numbered per Magna Carta Art. 15]
+      direction TB
+      L5[Layer 5 · Bounded self-improvement: place, route, repair — within limits]
+      L4[Layer 4 · Peer-to-peer transport + identity: dial by key, hole-punch, relays]
+      L3[Layer 3 · Redundant distribution + integrity: erasure coding, BLAKE3 verification]
+      L2[Layer 2 · Encrypted sharding: encrypt → split, no fragment readable]
+      L1[Layer 1 · Compression: shrink everything before storage]
+      L5 --> L4 --> L3 --> L2 --> L1
+    end
+    COV --> D[(Idle capacity on real devices · phones, laptops, Pis, even fridges)]
+    INC[Incentives · contribution ledger, fair accounting — cross-cutting, charter Art. 12] -.-> COV
 ```
 
-The bottom four layers (1–4, plus the identity and mutable-state pieces) are the **buildable, safe core**. Layer 5 is bounded self-improvement. Everything above is applications people actually use.
+The four covenant layers **1–4** (compression, encrypted sharding, redundant distribution, peer-to-peer transport) are the **buildable, safe core** — exactly the charter's Article 16. **Layer 5** is bounded self-improvement. Mutable state and applications sit *above* the covenant; the incentive ledger (Article 12) cross-cuts it. (Compression and encrypted sharding are distinct charter layers — 1 and 2 — even though the code performs them together as "compress → encrypt → split.")
 
 ### C.2 Components & flow — storing and retrieving a file
 
@@ -192,7 +200,7 @@ Opinionated choices, with the honest alternative and the tradeoff. **Bold = star
 
 ## E. Updated implementation & build plan
 
-Supersedes the prior plan. Every phase ships something runnable, has explicit acceptance criteria, maps to the charter, and bakes in the **iterate loop: build → run → measure → learn → adjust → commit → push.** Interruption-proof: each phase is a finished checkpoint.
+This table follows the charter's build order (Magna Carta Article 23) and the companion Build Plan's phase numbering — bounded self-improvement stays **Phase 5**, the contribution economy stays **Phase 6** — and extends that plan with two later phases the Build Plan doesn't yet enumerate: **7 · mutable state & identity** and **8 · post-quantum & privacy hardening**. (Per Article 24 the charter governs; where this doc once renumbered self-improvement to 6, it has been reconciled back to the charter.) Every phase ships something runnable, has explicit acceptance criteria, maps to the charter, and bakes in the **iterate loop: build → run → measure → learn → adjust → commit → push.** Interruption-proof: each phase is a finished checkpoint.
 
 | Phase | You build | Acceptance test (done = ) | Charter |
 |---|---|---|---|
@@ -201,9 +209,9 @@ Supersedes the prior plan. Every phase ships something runnable, has explicit ac
 | **2 · Encrypted sharding** ⬅ next | compress → encrypt → split → reassemble | A file becomes N unreadable shards; any single shard is noise; whole rebuilds exactly | Art. 2, 3 |
 | **3 · Redundancy & self-healing** | Distribute shards with erasure coding; retrieve with some nodes offline | Kill a chunk of nodes; file still rebuilds; redundancy auto-restores | Art. 4, 13 |
 | **4 · A living network** | Multi-node discovery; health dashboard (reachable nodes) | 3+ heterogeneous devices self-organize; you watch nodes join/leave/heal on screen | Art. 11, 14 |
-| **5 · Mutable state & identity** | Keypair identity; a CRDT-backed profile/file-index; naming | Edit your index on two devices offline; they merge with no conflict; name resolves to latest | Art. 2, 7, 9 |
-| **6 · Bounded self-improvement** | Telemetry + rules that rebalance/reroute/repair, all logged & reversible, with a stop switch | Knock the network off-balance; it restores toward target *without you*; every action is logged and undoable | Art. 17, 18 |
-| **7 · Contribution economy** (optional) | Proven contribution ledger | A node earns credit for storage served and spends it to store its own data | Art. 12 |
+| **5 · Bounded self-improvement** | Telemetry + rules that rebalance/reroute/repair, all logged & reversible, with a stop switch | Knock the network off-balance; it restores toward target *without you*; every action is logged and undoable | Art. 17, 18 |
+| **6 · Contribution economy** (optional) | Proven contribution ledger | A node earns credit for storage served and spends it to store its own data | Art. 12 |
+| **7 · Mutable state & identity** | Keypair identity; a CRDT-backed profile/file-index; naming | Edit your index on two devices offline; they merge with no conflict; name resolves to latest | Art. 2, 7, 9 |
 | **8 · Post-quantum & privacy hardening** | Hybrid PQ encryption; metadata minimization; credible-exit export | Data encrypts under hybrid classical+ML-KEM; user can export everything and leave | Art. 8, 9, 18 |
 
 **The iterate loop, concretely, every phase:** write the smallest version that could work → run it and watch → measure against the acceptance test → note what surprised you → adjust → `git add -A && git commit -m "…" && git push`. Ship rough, learn from reality (the "if you're not embarrassed by v1, you shipped too late" principle the show quotes), refine.
@@ -241,7 +249,7 @@ Supersedes the prior plan. Every phase ships something runnable, has explicit ac
 - *Abuse / illegal content on a censorship-resistant network* → design for encrypted-by-default (operators can't see content), clear norms, and node-operator controls, and think through this honestly before scale, not after.
 - *Complexity outruns a solo newcomer* → the phased plan; stand on libraries; each phase shippable alone.
 
-**Minimal path to one real user deriving real value.** The whole point of the phased build: by Phase 5 you have identity + mutable state + redundant encrypted storage across a few devices. The first real use case is small and honest — *"back up and sync my own files across my own devices, encrypted, with no cloud account."* One person, real value, no server. That's the seed from which a network grows; everything after is more nodes and more uses.
+**Minimal path to one real user deriving real value.** The whole point of the phased build: by Phase 7 you have identity + mutable state + redundant encrypted storage across a few devices. The first real use case is small and honest — *"back up and sync my own files across my own devices, encrypted, with no cloud account."* One person, real value, no server. That's the seed from which a network grows; everything after is more nodes and more uses.
 
 ---
 
@@ -249,11 +257,11 @@ Supersedes the prior plan. Every phase ships something runnable, has explicit ac
 
 1. **Transport choice for the real network:** stay on Helia (all-JS, simplest) or adopt iroh (most robust, adds a Rust dependency) at Phase 4? *Leaning: prototype on Helia, evaluate iroh at Phase 4.*
 2. **Erasure-coding parameters:** what N and k (redundancy vs. overhead)? *Start Storj-like; tune with Phase 3 measurements.*
-3. **CRDT choice:** Automerge (clean JSON) vs. Yjs (text-heavy) for Phase 5. *Leaning Automerge.*
+3. **CRDT choice:** Automerge (clean JSON) vs. Yjs (text-heavy) for Phase 7. *Leaning Automerge.*
 4. **When (if ever) to add a token** — deliberately deferred; revisit only with real network traction.
 5. **The abuse/content-moderation stance** on an encrypted, censorship-resistant network — needs a thought-through position before Phase 4 scale.
 6. **Post-quantum timing:** how soon to move at-rest encryption to hybrid PQ, given "harvest now, decrypt later." *Leaning: design keys PQ-ready now, switch on by Phase 8.*
 
-**Essential vs. aspirational:** Phases 2–5 (encrypted sharding, redundancy, living network, mutable state + identity) are *essential* — they are PiperNet. Phase 6 (bounded self-improvement) is the charter's signature capability and high-value. Phases 7–8 (economy, PQ hardening) are important but can follow real usage. The agentic and token layers are where ambition must stay disciplined by the charter.
+**Essential vs. aspirational:** Phases 2–4 (encrypted sharding, redundancy, a living network) together with Phase 7 (mutable state & identity) are *essential* — they are PiperNet. Phase 5 (bounded self-improvement) is the charter's signature capability and high-value. Phases 6 and 8 (economy, PQ hardening) are important but can follow real usage. The agentic and token layers are where ambition must stay disciplined by the charter. *(Note: mutable state & identity is numbered 7 to keep the charter's Article 23 ordering — self-improvement as Phase 5 — intact; its being numbered later than 5 does not lower its priority, only its charter-fixed position.)*
 
 *Next action: build Phase 2 — encrypted sharding — and commit it. The design above is the map; the repo is the territory.*

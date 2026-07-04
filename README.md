@@ -26,7 +26,9 @@ This repository is built by a first-time coder, one working milestone at a time.
 
 ## Running the code on your machine
 
-You need **Node.js 20 or newer** (check with `node --version`).
+You need **Node.js 22.15 or newer** (check with `node --version`). Phase 2's
+encrypted sharding uses Node's built-in `zstd` compression, which first became
+available in Node 22.15.
 
 ```bash
 # 1. Install dependencies (only needed once)

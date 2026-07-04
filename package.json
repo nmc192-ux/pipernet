@@ -11,11 +11,13 @@
     "shard": "node src/03-encrypted-sharding.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.15"
   },
   "dependencies": {
     "@chainsafe/libp2p-noise": "^17.0.0",
     "@chainsafe/libp2p-yamux": "^8.0.1",
+    "@helia/bitswap": "^4.0.4",
+    "@helia/libp2p": "^1.0.4",
     "@helia/unixfs": "^8.0.2",
     "@libp2p/identify": "^4.1.8",
     "@libp2p/tcp": "^11.0.22",
