@@ -16,8 +16,8 @@ This repository is built by a first-time coder, one working milestone at a time.
 
 | Phase | Goal | Status |
 |-------|------|--------|
-| 0 | Foundations: environment, git, first script | ✅ started |
-| 1 | One file, two devices — content-addressed storage and retrieval | 🚧 in progress |
+| 0 | Foundations: environment, git, first script | ✅ done |
+| 1 | One file, two devices — content-addressed storage and retrieval | ✅ done |
 | 2 | Encrypted sharding | ⬜ next |
 | 3 | Redundancy & self-healing | ⬜ |
 | 4 | A living multi-device network | ⬜ |
@@ -51,6 +51,29 @@ Each script prints what it's doing as it goes, so you can watch the idea become 
 - **Language:** JavaScript (Node.js).
 
 See `docs/BUILD_PLAN.md` → "The modern stack" for why each piece was chosen.
+
+## Pushing this repo to your own GitHub
+
+This repository already has its full commit history. To put it on *your* GitHub
+account and push future work, you sign in as yourself (only you can do that):
+
+```bash
+# 1. Create an empty repo on github.com (no README/license — this repo has them).
+#    Say it gives you a URL like: https://github.com/YOUR-USERNAME/pipernet.git
+
+# 2. From inside this project folder, point it at your new repo and push:
+git remote add origin https://github.com/YOUR-USERNAME/pipernet.git
+git branch -M main
+git push -u origin main
+```
+
+From then on, the loop for every new piece of work is:
+
+```bash
+git add -A
+git commit -m "Describe what you built"
+git push
+```
 
 ## License
 
