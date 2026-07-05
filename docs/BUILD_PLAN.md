@@ -89,8 +89,9 @@ The show ended in 2019. Since then, nearly every hard problem PiperNet faced has
 
 ---
 
-## Phase 4 — A living network
+## Phase 4 — A living network ✅
 *Several real devices that find each other, organize, and report their own health.*
+*Built: `npm run network` — this is the phase that **joins the two prior tracks**. Until now Phases 1 (transport by CID) and 2–3 (compress→encrypt→erasure-code) were separate: shards were written to a local `tmp/` folder and never moved. Phase 4 stores each encrypted, erasure-coded shard on a **different node** and moves it across the network by CID. Proven by distributing 5 shards across 5 nodes, switching 2 off, and rebuilding the file byte-for-byte from the 3 survivors — shards fetched from peers, not from disk. Transport lives behind one swappable seam (`src/lib/pipernet-node.js`); the shared pipeline behind `src/lib/sharding.js`.*
 
 | | |
 |---|---|

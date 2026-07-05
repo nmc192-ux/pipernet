@@ -20,8 +20,8 @@ This repository is built by a first-time coder, one working milestone at a time.
 | 1 | One file, two devices — content-addressed storage and retrieval | ✅ done |
 | 2 | Encrypted sharding | ✅ done |
 | 3 | Redundancy & self-healing | ✅ done |
-| 4 | A living multi-device network | ⬜ next |
-| 5 | Bounded self-improvement | ⬜ |
+| 4 | A living multi-device network — shards travel between peers, file survives node loss | ✅ done |
+| 5 | Bounded self-improvement | ⬜ next |
 | 6 | Mutable state & identity | ⬜ |
 | 7 | Post-quantum & privacy hardening | ⬜ |
 | 8 | Contribution economy (optional) | ⬜ |
@@ -56,6 +56,12 @@ PIPERNET_PASSPHRASE='my secret words' npm run shard
 PIPERNET_PASSPHRASE='my secret words' npm run redundancy
 #    ...or on a real file of your own:
 #    PIPERNET_PASSPHRASE='my secret words' node src/04-redundancy.js /path/to/your/file
+
+# 7. Phase 4 — the living network: 5 nodes, each holding one shard by CID; switch
+#    2 off and the file still rebuilds from the survivors, fetched over the network
+PIPERNET_PASSPHRASE='my secret words' npm run network
+#    ...or on a real file of your own:
+#    PIPERNET_PASSPHRASE='my secret words' node src/05-living-network.js /path/to/your/file
 ```
 
 Each script prints what it's doing as it goes, so you can watch the idea become real.
