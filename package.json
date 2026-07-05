@@ -10,7 +10,8 @@
     "twonodes": "node src/02-two-nodes.js",
     "shard": "node src/03-encrypted-sharding.js",
     "redundancy": "node src/04-redundancy.js",
-    "network": "node src/05-living-network.js"
+    "network": "node src/05-living-network.js",
+    "heal": "node src/06-self-healing.js"
   },
   "engines": {
     "node": ">=22.15"

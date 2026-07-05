@@ -21,8 +21,8 @@ This repository is built by a first-time coder, one working milestone at a time.
 | 2 | Encrypted sharding | ✅ done |
 | 3 | Redundancy & self-healing | ✅ done |
 | 4 | A living multi-device network — shards travel between peers, file survives node loss | ✅ done |
-| 5 | Bounded self-improvement | ⬜ next |
-| 6 | Mutable state & identity | ⬜ |
+| 5 | Bounded self-improvement — the network notices damage and heals itself, inside the charter's fence | ✅ done |
+| 6 | Mutable state & identity | ⬜ next |
 | 7 | Post-quantum & privacy hardening | ⬜ |
 | 8 | Contribution economy (optional) | ⬜ |
 
@@ -62,6 +62,11 @@ PIPERNET_PASSPHRASE='my secret words' npm run redundancy
 PIPERNET_PASSPHRASE='my secret words' npm run network
 #    ...or on a real file of your own:
 #    PIPERNET_PASSPHRASE='my secret words' node src/05-living-network.js /path/to/your/file
+
+# 8. Phase 5 — bounded self-improvement: the network notices lost redundancy and
+#    heals ITSELF back to target — by human-written rules, with a human off-switch,
+#    every move logged and reversible, never touching encryption (charter Art. 17–18)
+PIPERNET_PASSPHRASE='my secret words' npm run heal
 ```
 
 Each script prints what it's doing as it goes, so you can watch the idea become real.

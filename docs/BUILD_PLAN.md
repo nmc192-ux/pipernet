@@ -102,8 +102,9 @@ The show ended in 2019. Since then, nearly every hard problem PiperNet faced has
 
 ---
 
-## Phase 5 — Bounded self-improvement
+## Phase 5 — Bounded self-improvement ✅
 *The network gets better on its own — inside the fence the charter built.*
+*Built: `npm run heal` — a control loop reads telemetry (`src/lib/telemetry.js`) and, by a fixed human-written ruleset, repairs lost redundancy back to target using a typed, logged, reversible repair API (`src/lib/repair.js`). It satisfies the charter's Article 17–18 acceptance test directly, proven by five checks: (a) self-heals to target with no human action; (b) the rebuilt file is byte-for-byte identical; (c) with the human off-switch (`tmp/STOP`) engaged it observes but takes zero actions; (d) every repair is reversible via `undo`; (e) the audit log contains only actions the ruleset permits. The healer operates solely on encrypted shards — it is never given the passphrase, so it cannot weaken or bypass encryption (Art. 18).*
 
 | | |
 |---|---|

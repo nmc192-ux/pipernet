@@ -33,7 +33,17 @@ const wasmPath = path.join(
   path.dirname(require.resolve("@subspace/reed-solomon-erasure.wasm")),
   "reed_solomon_erasure_bg.wasm"
 );
-const reedSolomon = ReedSolomonErasure.fromBytes(fs.readFileSync(wasmPath));
+const wasmBytes = fs.readFileSync(wasmPath);
+
+// IMPORTANT: this WASM library keeps internal state that leaks between calls —
+// after one encode/reconstruct, a later reconstruct on the SAME instance can
+// wrongly report RESULT_ERROR_TOO_FEW_SHARDS_PRESENT even when enough shards are
+// present. Phases 3 and 4 do a single erasure operation per run, so they never
+// hit it; Phase 5 does several in a row, which exposed it. The robust fix is to
+// use a FRESH, stateless instance for every operation (cheap to create).
+function freshRS() {
+  return ReedSolomonErasure.fromBytes(wasmBytes);
+}
 
 // --- The shape of our redundancy --------------------------------------------
 export const DATA_SHARDS = 3; // k — shards that carry the data
@@ -130,7 +140,7 @@ export function erasureEncode(encrypted) {
   buffer.writeUInt32BE(encrypted.length, 0); // length header
   encrypted.copy(buffer, 4); // encrypted bytes right after it
 
-  const code = reedSolomon.encode(buffer, DATA_SHARDS, PARITY_SHARDS);
+  const code = freshRS().encode(buffer, DATA_SHARDS, PARITY_SHARDS);
   if (code !== ReedSolomonErasure.RESULT_OK) {
     throw new Error(`Erasure encoding failed: ${resultName(code)}`);
   }
@@ -158,7 +168,7 @@ export function erasureReconstruct(shards, present, shardSize) {
     }
   }
 
-  const code = reedSolomon.reconstruct(buffer, DATA_SHARDS, PARITY_SHARDS, present);
+  const code = freshRS().reconstruct(buffer, DATA_SHARDS, PARITY_SHARDS, present);
   if (code !== ReedSolomonErasure.RESULT_OK) {
     return { ok: false, code };
   }
